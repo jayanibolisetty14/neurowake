@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: neurowake-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=change-this-super-secret-key-in-production
+      - ACCESS_TOKEN_EXPIRE_MINUTES=1440
+      - DATABASE_URL=sqlite:///./alarm_platform.db
+    volumes:
+      - backend_data:/app
+
+  frontend:
+    build: ./frontend
+    container_name: neurowake-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  backend_data:
